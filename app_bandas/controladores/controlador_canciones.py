@@ -72,6 +72,18 @@ def eliminar_cancion(id_cancion):
     Cancion.elimina_cancion(data)
     return redirect('/perfil')
 
+@app.route('/mis_canciones', methods=['GET'])
+def mostrar_mis_canciones():
+    if 'id_usuario' not in session:
+        flash("Necesitas iniciar sesión primero")
+        return redirect('/')
+    id_usuario = session['id_usuario']
+    canciones = Cancion.obtener_canciones_usuario(id_usuario)
+    return render_template("mis_canciones.html", canciones=canciones)
+
+
+
+
 
 
 

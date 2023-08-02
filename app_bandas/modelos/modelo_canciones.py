@@ -89,6 +89,26 @@ class Cancion:
                 WHERE id_cancion = %(id_cancion)s;
                 """
         return connectToMySQL( BASE_DATOS ).query_db( query, data )
+    
+    @classmethod
+    def obtener_canciones_usuario(cls, id_usuario):
+        query = """
+                SELECT c.*, b.nombre_banda
+                FROM canciones AS c
+                JOIN bandas AS b ON c.id_banda = b.id
+                WHERE b.id_usuario_banda = %(id)s;
+                """
+        data = {
+            "id": id_usuario
+        }
+        resultado = connectToMySQL(BASE_DATOS).query_db(query, data)
+        canciones = []
+        for cancion in resultado:
+            cancion_obj = Cancion(cancion)
+            cancion_obj.banda = cancion['nombre_banda']
+            canciones.append(cancion_obj)
+        return canciones
+
 
     @staticmethod
     def validar_cancion( data ):
