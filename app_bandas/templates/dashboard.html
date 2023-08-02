@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <title>Bandas de Rock</title>
+    </head>
+    <body>
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12 mt-4">
+                    <h1 class="text">
+                        ¡Rockeando con {{session['nombre']}} {{session['apellido']}}!
+                    </h1>
+                    <div class="">
+                        <div class="d-grid gap-2 mb-2 pb-2 d-md-flex justify-content-md-end">
+                            <form action="/perfil" method="GET">
+                                <button type="submit" class="btn btn-dark me-md-2">
+                                    Mi perfil
+                                </button>
+                            </form>
+                            <form action="/formulario/banda" method="GET">
+                                <button type="submit" class="btn btn-dark">
+                                    + Crear nueva banda 
+                                </button>
+                            </form>
+                            <form action="/logout" method="POST">
+                                <button type="submit" class="btn btn-secondary">
+                                    Logout
+                                </button>
+                            </form>
+                        </div>
+                    </div>    
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col">Nombre banda</th>
+                                <th scope="col">Miembro fundador</th>
+                                <th scope="col">Género musical</th>
+                                <th scope="col">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for banda in lista_bandas %}
+                                <tr>
+                                    <td>{{ banda.nombre_banda }}</td>
+                                    <td>{{ banda.usuario.nombre }} {{ banda.usuario.apellido }}</td>
+                                    <td>{{ banda.genero_musical }}</td>
+                                    <td>
+                                        {% if session['id_usuario'] == banda.id_usuario_banda %}
+                                        <form action="/formulario/editar/banda/{{ banda.id }}" method="GET" class="d-inline">
+                                            <button type="submit" class="btn btn-dark">
+                                                Editar
+                                            </button>
+                                        </form>
+                                        <form action="/eliminar/banda/{{ banda.id }}" method="POST" class="d-inline">
+                                            <button type="submit" class="btn btn-secondary">
+                                                Eliminar
+                                            </button>
+                                        </form>    
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                        
+                    </table>
+                </div> 
+            </div>
+        </div>    
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+    </body>
+</html>

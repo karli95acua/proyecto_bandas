@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <title>Login y Registro</title>
+    </head>
+    <body>
+        <div class="container">
+            <div class="row">
+                <h1 class="col-sm-12 mt-4"> 
+                    ¡Comunidad de Bandas de rock!
+                </h1>
+                <h2 class="col-sm-12 mt-4"> 
+                    Te recomendamos canciones especiales, para momentos especiales
+                </h2>     
+            </div>
+            <div class="row"> 
+                <div class="col-6 d-flex-col align-items-center"> 
+                    <h1>Registro</h1>
+                    <form action="/crear/usuario" method="POST">
+                        <div class="mb-3">
+                            <label for="nombre">
+                                Nombre:
+                            </label>
+                            <input class="form-control" type="text" id="nombre" name="nombre">
+                            {% for message in get_flashed_messages(category_filter = ['error_nombre']): %}
+                                <div class="alert alert-danger">
+                                    {{message}}
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <div class="mb-3">
+                            <label for="apellido">
+                                Apellido:
+                            </label>
+                            <input class="form-control" type="text" id="apellido" name="apellido">
+                            {% for message in get_flashed_messages(category_filter = ['error_apellido']): %}
+                                <div class="alert alert-danger">
+                                    {{message}}
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <div class="mb-3">
+                            <label for="email">
+                                Email:
+                            </label>
+                            <input class="form-control" type="text" id="email" name="email">
+                            {% for message in get_flashed_messages(category_filter = ['error_email']): %}
+                                <div class="alert alert-danger">
+                                    {{message}}
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <div class="mb-3">
+                            <label for="password">
+                                Password:
+                            </label>
+                            <input class="form-control" type="password" id="password" name="password">
+                            {% for message in get_flashed_messages(category_filter = ['error_password']): %}
+                                <div class="alert alert-danger">
+                                    {{message}}
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <div class="mb-3">
+                            <label for="confirmacion_password">
+                                Confirmación de password:
+                            </label>
+                            <input class="form-control" type="password" id="confirmacion_password" name="confirmacion_password">
+                            {% for message in get_flashed_messages(category_filter = ['error_confirmacion_password']): %}
+                                <div class="alert alert-danger">
+                                    {{message}}
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <button type="submit" class="btn btn-dark">
+                            Registro
+                        </button>
+                        <div class="mb-5">
+                        </div>
+                    </form>
+                </div>
+                <div class="col-6 d-flex-col align-items-center"> 
+                    <h1>
+                        Login
+                    </h1>
+                    <form action="/login" method="POST">
+                        <div class="mb-3">
+                            <label for="email_login">
+                                Email:
+                            </label>
+                            <input class="form-control" type="text" id="email_login" name="email_login">
+                            {% for message in get_flashed_messages(category_filter = ["error_email_login"]): %}
+                                <div class="alert alert-danger">
+                                    {{message}}
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <div class="mb-3">
+                            <label for="password_login">
+                                Password:
+                            </label>
+                            <input class="form-control" type="password" id="password_login" name="password_login">
+                            {% for message in get_flashed_messages(category_filter = ["error_password_login"]): %}
+                                <div class="alert alert-danger">
+                                    {{message}}
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <button type="submit" class="btn btn-dark">
+                            Login
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+    </body>
+</html>
