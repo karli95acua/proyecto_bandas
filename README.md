@@ -1,0 +1,2 @@
+# Nombre del Proyecto: PROYECTO_BANDAS
+# Descripción: Proyecto personal que pretende generar una comunidad en donde los usuarios, luego de haber iniciado sesión o registrado, puedan crear bandas y a su vez, puedan agregar canciones creadas por esas bandas. En un futuro, espero, a través de un apartado de emociones asociadas a las canciones, que mi app pueda recomendar canciones basadas en el estado de ánimo que tenga el usuario al iniciar sesión en la comunidad.
