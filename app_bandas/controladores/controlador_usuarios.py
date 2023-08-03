@@ -52,6 +52,6 @@ def procesa_login():
 @app.route( '/logout', methods = ['POST'] )
 def procesa_logout():
     session.clear()
-    return redirect( '/' )
+    return redirect( '/inicio' )
 
 

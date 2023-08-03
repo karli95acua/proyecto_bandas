@@ -7,36 +7,39 @@
         <title>Bandas de Rock</title>
     </head>
     <body>
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-12 mt-4">
-                    <h1 class="text">
-                        ¡Rockeando con {{session['nombre']}} {{session['apellido']}}!
-                    </h1>
-                    <div class="">
-                        <div class="d-grid gap-2 mb-2 pb-2 d-md-flex justify-content-md-end">
-                            <form action="/perfil" method="GET">
-                                <button type="submit" class="btn btn-dark me-md-2">
-                                    Mi perfil
-                                </button>
-                            </form>
-                            <form action="/mis_canciones" method="GET">
-                                <button type="submit" class="btn btn-dark me-md-2">
-                                    Mis Canciones
-                                </button>
-                            </form>
-                            <form action="/formulario/banda" method="GET">
-                                <button type="submit" class="btn btn-dark">
-                                    + Crear nueva banda 
-                                </button>
-                            </form>
-                            <form action="/logout" method="POST">
-                                <button type="submit" class="btn btn-sm btn-secondary">
-                                    Logout
-                                </button>
-                            </form>
-                        </div>
-                    </div>    
+        <nav class="navbar bg-dark border-bottom border-body navbar-expand-lg bg-body-tertiary py-2" data-bs-theme="dark">
+            <div class="container-fluid">
+                <a class="navbar-brand text-white" href="#">
+                    <h1 class="d-inline ms-5">Bandapp · </h1>
+                    <h5 class="d-inline">¡Rockeando con {{session['nombre']}} {{session['apellido']}}! </h5>
+                </a>
+                <div class="collapse navbar-collapse justify-content-end" id="navbarText">
+                    <form action="/perfil" method="GET">
+                        <button type="submit" class="btn btn-dark me-md-2">
+                            Mi perfil
+                        </button>
+                    </form>
+                    <form action="/mis_canciones" method="GET">
+                        <button type="submit" class="btn btn-dark me-md-2">
+                            Mis Canciones
+                        </button>
+                    </form>
+                    <form action="/formulario/banda" method="GET">
+                        <button type="submit" class="btn btn-dark me-md-2">
+                            + Crear nueva banda 
+                        </button>
+                    </form>
+                    <form action="/logout" method="POST">
+                        <button type="submit" class="btn btn-sm btn-secondary">
+                                Logout
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </nav>
+        <div class="container-fluid mt-3 mb-1 ms-3">
+            <div class="">
+                <div class="col-12">    
                     <table class="table table-striped">
                         <thead>
                             <tr>
