@@ -69,15 +69,3 @@ def eliminar_banda( id ):
     Banda.elimina_una( data )
     return redirect( '/dashboard' )
 
-# SE QUE ESTA RUTA PODRIA SER MAS UTIL EN UN CONTROLADOR DE USUARIO O DE PERFIL; PERO LO DEJARE AQUI
-@app.route('/perfil', methods = ['GET']) #validado por session
-def desplegar_perfil():
-    if 'id_usuario' not in session:
-        flash('Debes iniciar sesión para ver esta página.', 'error_acceso')
-        return redirect('/')
-    else:
-        data = {
-            "id_usuario": session['id_usuario']
-        }
-        lista_mis_bandas = Banda.obtener_bandas_canciones(data)
-        return render_template('perfil.html', lista_mis_bandas = lista_mis_bandas)

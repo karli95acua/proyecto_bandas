@@ -1,96 +1,146 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-        <title>Bandas de Rock</title>
-    </head>
-    <body>
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-12 mt-4">
-                    <h1 class="text">
-                        ¡Rockeando con {{session['nombre']}} {{session['apellido']}}!
-                    </h1>
-                    <h2>
-                        Mis bandas:
-                    </h2>
-                    <div class="">
-                        <div class="d-grid gap-2 mb-2 pb-2 d-md-flex justify-content-md-end">
-                            <form action="/dashboard" method="GET">
-                                <button type="submit" class="btn btn-dark">
-                                    Dashboard 
-                                </button>
-                            </form>
-                            <form action="/mis_canciones" method="GET">
-                                <button type="submit" class="btn btn-dark">
-                                    Mis Canciones
-                                </button>
-                            </form>
-                            <form action="/logout" method="POST">
-                                <button type="submit" class="btn btn-sm btn-secondary">
-                                    Logout
-                                </button>
-                            </form>
-                        </div>
-                    </div>    
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th scope="col">Nombre banda</th>
-                                <th scope="col">Canciones agregadas</th>
-                                <th scope="col">Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for banda in lista_mis_bandas %}
-                                <tr>
-                                    <td>{{ banda.nombre_banda }}</td>
-                                    <td>
-                                        {% for cancion in banda.canciones %}
-                                            <p>{{ cancion.titulo_cancion }}</p>
-                                            <form action="/formulario/editar/cancion/{{ cancion.id_cancion }}" method="GET" class="d-inline">
-                                                <button type="submit" class="btn btn-sm btn-info">
-                                                    Editar canción
-                                                </button>
-                                            </form>
-                                            <form action="/eliminar/cancion/{{ cancion.id_cancion }}" method="POST" class="d-inline" onsubmit="return confirm('¿Estás seguro de eliminar esta canción?');">
-                                                <button type="submit" class="btn btn-sm btn-secondary">
-                                                    Eliminar canción
-                                                </button>
-                                            </form>
-                                            
-                                        {% endfor %}
-                                    </td>
-                                    <td>
-                                        {% if session['id_usuario'] == banda.id_usuario_banda %}
-                                        <form action="/formulario/editar/banda/{{ banda.id }}" method="GET" class="d-inline">
-                                            <button type="submit" class="btn btn-sm btn-dark">
-                                                Editar
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <title>Bandas de Rock</title>
+</head>
+
+<body>
+    <nav class="navbar bg-dark border-bottom border-body navbar-expand-lg bg-body-tertiary py-2" data-bs-theme="dark">
+        <div class="container-fluid">
+            <a class="navbar-brand text-white" href="#">
+                <h1 class="d-inline ms-5">Bandapp · </h1>
+                <h5 class="d-inline">¡Rockeando con {{session['nombre']}} {{session['apellido']}}! </h5>
+                <h5 class="ms-5 mt-1">Perfil personal</h5>
+            </a>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarText">
+                <form action="/dashboard" method="GET">
+                    <button type="submit" class="btn btn-dark me-md-2">
+                        Dashboard
+                    </button>
+                </form>
+                <form action="/mis_canciones" method="GET">
+                    <button type="submit" class="btn btn-dark md-2">
+                        Mis Canciones
+                    </button>
+                </form>
+                <form action="/formulario/banda" method="GET">
+                    <button type="submit" class="btn btn-dark">
+                        + Crear nueva banda
+                    </button>
+                </form>
+                <form action="/logout" method="POST">
+                    <button type="submit" class="btn btn-sm me-2 btn-secondary">
+                        Logout
+                    </button>
+                </form>
+            </div>
+        </div>
+    </nav>
+    <div class="container-fluid mt-3 ms-2">
+        <div class="row">
+            <div class="col-lg-4 col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Credencial de: {{session['nombre']}} {{session['apellido']}}</h5>
+                        <p class="card-text"><small class="text-muted">Fecha de Nacimiento: {{ usuario.fecha_nacimiento
+                                }}</small></p>
+                        <p class="card-text">Descripción: {{ usuario.descripcion_usuario }}</p>
+                        <p class="card-text">Estilo de Rock favorito: {{ usuario.estilo_rock_descripcion }}</p>
+                        <form action="" method="GET" class="d-inline">
+                            <button type="submit" class="btn btn-sm btn-info">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                                    <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
+                                </svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+                                    <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+                                    <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
+                                </svg>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <br></br>
+            <div class="col-lg-8 col-lg-6">
+                <table class="table table-sm table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">Nombre banda</th>
+                            <th scope="col">Canciones agregadas</th>
+                            <th scope="col">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for banda in lista_mis_bandas %}
+                        <tr>
+                            <td>{{ banda.nombre_banda }}</td>
+                            <td>
+                                {% for cancion in banda.canciones %}
+                                <div class="row">
+                                    <div class="col-6 text-truncate">{{ cancion.titulo_cancion }}</div>
+                                    <div class="col">
+                                        <form action="/formulario/editar/cancion/{{ cancion.id_cancion }}" method="GET">
+                                            <button type="submit" class="btn btn-sm btn-info mb-1" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-music-note-beamed" viewBox="0 0 16 16">
+                                                    <path d="M6 13c0 1.105-1.12 2-2.5 2S1 14.105 1 13c0-1.104 1.12-2 2.5-2s2.5.896 2.5 2zm9-2c0 1.105-1.12 2-2.5 2s-2.5-.895-2.5-2 1.12-2 2.5-2 2.5.895 2.5 2z"/>
+                                                    <path fill-rule="evenodd" d="M14 11V2h1v9h-1zM6 3v10H5V3h1z"/>
+                                                    <path d="M5 2.905a1 1 0 0 1 .9-.995l8-.8a1 1 0 0 1 1.1.995V3L5 4V2.905z"/>
+                                                </svg>
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                                    <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                                                    <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+                                                </svg>
                                             </button>
                                         </form>
-                                        <form action="/eliminar/banda/{{ banda.id }}" method="POST" class="d-inline">
-                                            <button type="submit" class="btn btn-sm btn-secondary">
-                                                Eliminar
+                                    </div>
+                                    <div class="col">
+                                        <form action="/eliminar/cancion/{{ cancion.id_cancion }}" method="POST"
+                                            onsubmit="return confirm('¿Estás seguro de eliminar esta canción?');">
+                                            <button type="submit" class="btn btn-sm btn-secondary" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .70rem;">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-music-note-beamed" viewBox="0 0 16 16">
+                                                    <path d="M6 13c0 1.105-1.12 2-2.5 2S1 14.105 1 13c0-1.104 1.12-2 2.5-2s2.5.896 2.5 2zm9-2c0 1.105-1.12 2-2.5 2s-2.5-.895-2.5-2 1.12-2 2.5-2 2.5.895 2.5 2z"/>
+                                                    <path fill-rule="evenodd" d="M14 11V2h1v9h-1zM6 3v10H5V3h1z"/>
+                                                    <path d="M5 2.905a1 1 0 0 1 .9-.995l8-.8a1 1 0 0 1 1.1.995V3L5 4V2.905z"/>
+                                                </svg>
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+                                                    <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z"/>
+                                                </svg>
                                             </button>
-                                        </form> 
-                                        <form action="/formulario/agregar/cancion/{{ banda.id }}" method="GET" class="d-inline">
-                                            <button type="submit" class="btn btn-sm btn-success">
-                                                +Agregar canción
-                                            </button>
-                                        </form>  
-                                        {% endif %}
-                                    </td>
-                                </tr>
-                            {% endfor %}
-                        </tbody>                                  
-                    </table>
-                </div> 
+                                        </form>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </td>
+                            <td>
+                                {% if session['id_usuario'] == banda.id_usuario_banda %}
+                                <form action="/formulario/agregar/cancion/{{ banda.id }}" method="GET"
+                                    class="d-inline mb-2">
+                                    <button type="submit" class="btn btn-sm btn-success" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-music-note-beamed" viewBox="0 0 16 16">
+                                            <path d="M6 13c0 1.105-1.12 2-2.5 2S1 14.105 1 13c0-1.104 1.12-2 2.5-2s2.5.896 2.5 2zm9-2c0 1.105-1.12 2-2.5 2s-2.5-.895-2.5-2 1.12-2 2.5-2 2.5.895 2.5 2z"/>
+                                            <path fill-rule="evenodd" d="M14 11V2h1v9h-1zM6 3v10H5V3h1z"/>
+                                            <path d="M5 2.905a1 1 0 0 1 .9-.995l8-.8a1 1 0 0 1 1.1.995V3L5 4V2.905z"/>
+                                        </svg>
+                                        +
+                                    </button>
+                                </form>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
-        </div>    
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
-    </body>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+        crossorigin="anonymous"></script>
+</body>
+
 </html>
-
-

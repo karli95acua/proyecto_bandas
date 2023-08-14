@@ -7,30 +7,33 @@
         <title>Edita tu Banda de Rock</title>
     </head>
     <body>
-        <div class="container">
-            <div class="row"> 
-                <div class="col-sm-12 mt-4">
-                    <h1 class="text">
-                        Edita tu Banda de Rock:
-                    </h1>
-                </div>
-            </div>
-            <div class="row"> 
-                <h3 class="col-8 text-info">
-                </h3>
-                <div class="col-4 d-flex"> 
+        <nav class="navbar bg-dark border-bottom border-body navbar-expand-lg bg-body-tertiary py-2" data-bs-theme="dark">
+            <div class="container-fluid">
+                <a class="navbar-brand text-white" href="#">
+                    <h1 class="d-inline ms-5">Bandapp · </h1>
+                    <h5 class="d-inline">¡Rockeando con {{session['nombre']}} {{session['apellido']}}! </h5>
+                    <h5 class="ms-5 mt-1">Edita tu banda de rock </h5>
+                </a>
+                <div class="collapse navbar-collapse justify-content-end" id="navbarText">
+                    <form action="/perfil" method="GET">
+                        <button type="submit" class="btn btn-dark me-md-2">
+                            Mi perfil
+                        </button>
+                    </form>
                     <form action="/dashboard" method="GET">
-                        <button type="submit" class="btn btn-dark">
+                        <button type="submit" class="btn btn-dark me-md-2">
                             Dashboard
                         </button>
                     </form>
                     <form action="/logout" method="POST">
-                        <button type="submit" class="btn btn-secondary">
-                            Logout
+                        <button type="submit" class="btn btn-sm me-2 btn-secondary">
+                                Logout
                         </button>
                     </form>
                 </div>
             </div>
+        </nav>
+        <div class="container mx-5 mt-3">
             <div class="row">
                 <form action="/editar/banda/{{banda.id}}" method="POST">
                     <div class="mb-3">

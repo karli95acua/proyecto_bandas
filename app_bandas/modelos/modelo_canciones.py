@@ -64,23 +64,23 @@ class Cancion:
         else:
             return None
     
-    @classmethod
-    def obtener_cancion_y_creador(cls, id_cancion):
-        query = """
-                SELECT c.*, u.*
-                FROM canciones AS c
-                JOIN bandas AS b ON c.id_banda = b.id
-                JOIN usuarios AS u ON b.id_usuario_banda = u.id
-                WHERE c.id_cancion = %(id)s;    
-                """
-        data = {
-            "id": id_cancion
-        }
-        resultado = connectToMySQL(BASE_DATOS).query_db(query, data)
-        if resultado:
-            return Cancion(resultado[0]), Usuario(resultado[0])
-        else:
-            return None
+  #  @classmethod
+  #  def obtener_cancion_y_creador(cls, id_cancion):
+  #      query = """
+  #              SELECT c.*, u.*
+  #              FROM canciones AS c
+  #              JOIN bandas AS b ON c.id_banda = b.id
+  #              JOIN usuarios AS u ON b.id_usuario_banda = u.id
+  #              WHERE c.id_cancion = %(id)s;    
+  #              """
+  #      data = {
+  #          "id": id_cancion
+  #      }
+  #      resultado = connectToMySQL(BASE_DATOS).query_db(query, data)
+  #      if resultado:
+  #          return Cancion(resultado[0]), Usuario(resultado[0])
+  #      else:
+  #          return None
 
     @classmethod
     def elimina_cancion( cls, data ):

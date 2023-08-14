@@ -12,8 +12,11 @@ class Usuario:
         self.password = data['password']
         self.fecha_creacion = data['fecha_creacion']
         self.fecha_actualizacion = data['fecha_actualizacion']
+        self.fecha_nacimiento = data.get('fecha_nacimiento', None)
+        self.descripcion_usuario = data.get('descripcion_usuario', None)
+        self.estilo_rock = data.get('estilo_rock', None)
     
-
+    
     @classmethod
     def crear_uno( cls, data ):
         query = """
@@ -35,6 +38,21 @@ class Usuario:
             return None
         else:
             return Usuario( resultado[0] )
+        
+    @classmethod
+    def tarjeta_usuario(cls, data):
+        query = """
+                SELECT usuarios.nombre, usuarios.fecha_nacimiento, usuarios.fecha_creacion, usuarios.descripcion_usuario, estilos_rock.descripcion AS estilo_rock_descripcion
+                FROM usuarios
+                JOIN estilos_rock ON usuarios.estilo_rock = estilos_rock.id
+                WHERE usuarios.id = %(id_usuario)s
+                """
+        resultado = connectToMySQL(BASE_DATOS).query_db(query, data)
+        if len(resultado) == 0:
+            return None
+        else:
+            return resultado[0]
+    
     
     @staticmethod
     def validar_registro( data ):
