@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <title>Bandas de Rock</title>
+</head>
+
+<body>
+    <nav class="navbar bg-dark border-bottom border-body navbar-expand-lg bg-body-tertiary py-2" data-bs-theme="dark">
+        <div class="container-fluid">
+            <a class="navbar-brand text-white" href="#">
+                <h1 class="d-inline ms-5">Bandapp · </h1>
+                <h5 class="d-inline">¡Rockeando con {{session['nombre']}} {{session['apellido']}}! </h5>
+                <h5 class="ms-5 mt-1">Editar Perfil personal</h5>
+            </a>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarText">
+                <form action="/dashboard" method="GET">
+                    <button type="submit" class="btn btn-dark me-md-2">
+                        Dashboard
+                    </button>
+                </form>
+                <form action="/mis_canciones" method="GET">
+                    <button type="submit" class="btn btn-dark md-2">
+                        Mis Canciones
+                    </button>
+                </form>
+                <form action="/formulario/banda" method="GET">
+                    <button type="submit" class="btn btn-dark">
+                        + Crear nueva banda
+                    </button>
+                </form>
+                <form action="/logout" method="POST">
+                    <button type="submit" class="btn btn-sm me-2 btn-secondary">
+                        Logout
+                    </button>
+                </form>
+            </div>
+        </div>
+    </nav>
+    <div class="container-fluid ms-5 mt-5 mb-4">
+        <div class="row">
+            <div class="col-lg-6 col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <form action="/actualizar/perfil" method="POST">
+                            <h5 class="card-title">Credencial de: {{session['nombre']}} {{session['apellido']}}</h5>
+                            <div class="mb-3">
+                                <label for="estilo_rock" class="form-label">Estilo de Rock favorito:</label>
+                                <select class="form-control" id="estilo_rock" name="estilo_rock" required>
+                                    {% for estilo in estilos %}
+                                        <option value="{{ estilo.descripcion }}" {% if usuario.estilo_rock_descripcion == estilo.descripcion %}selected{% endif %}>{{ estilo.descripcion }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                                <div class="mb-3">
+                                    <label for="fecha_nacimiento" class="form-label">Fecha de Nacimiento:</label>
+                                    <input type="date" class="form-control" id="fecha_nacimiento" name="fecha_nacimiento" value="{{ usuario.fecha_nacimiento }}" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="descripcion_usuario" class="form-label">Acerca de mi:</label>
+                                    <textarea class="form-control" id="descripcion_usuario" name="descripcion_usuario" required>{{ usuario.descripcion_usuario }}</textarea>
+                                </div>
+                                <button type="submit" class="btn btn-sm btn-info">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                                        <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
+                                    </svg>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+                                        <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+                                        <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
+                                    </svg>
+                            </button>
+                        </form>    
+                        </div>
+                    </div>
+                </div>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+        </body>
+    </html>

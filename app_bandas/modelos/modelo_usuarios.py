@@ -15,8 +15,7 @@ class Usuario:
         self.fecha_nacimiento = data.get('fecha_nacimiento', None)
         self.descripcion_usuario = data.get('descripcion_usuario', None)
         self.estilo_rock = data.get('estilo_rock', None)
-    
-    
+        
     @classmethod
     def crear_uno( cls, data ):
         query = """
@@ -52,8 +51,31 @@ class Usuario:
             return None
         else:
             return resultado[0]
+
+    @classmethod
+    def editar_tarjeta_usuario(cls, data):
+        query = """
+                UPDATE usuarios
+                SET fecha_nacimiento = %(fecha_nacimiento)s, descripcion_usuario = %(descripcion_usuario)s, estilo_rock = %(estilo_rock)s
+                WHERE id = %(id)s;
+                """
+        return connectToMySQL(BASE_DATOS).query_db(query, data)
     
-    
+    @classmethod
+    def obtener_todos_los_estilos(cls):
+        query = "SELECT * FROM estilos_rock;"
+        return connectToMySQL(BASE_DATOS).query_db(query)
+
+    @classmethod
+    def obtener_estilo_id_por_descripcion(cls, descripcion):
+        query = """
+                SELECT id FROM estilos_rock WHERE descripcion = %(descripcion)s;
+                """
+        resultado = connectToMySQL(BASE_DATOS).query_db(query, {"descripcion": descripcion})
+        if resultado:
+            return resultado[0]['id']
+        return None
+
     @staticmethod
     def validar_registro( data ):
         es_valido = True

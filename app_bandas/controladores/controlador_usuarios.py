@@ -5,7 +5,6 @@ from app_bandas.modelos.modelo_bandas import Banda
 from flask_bcrypt import Bcrypt
 from app_bandas import app
 
-
 bcrypt = Bcrypt ( app )
 
 @app.route('/', methods = ['GET'])
@@ -26,9 +25,7 @@ def nuevo_usuario():
         session['nombre'] = data['nombre']
         session['apellido'] = data['apellido']
         session['id_usuario'] = id_usuario
-
         return redirect( '/perfil' )
-
 
 @app.route( '/login', methods = ['POST'] )
 def procesa_login():
@@ -49,12 +46,10 @@ def procesa_login():
             session['id_usuario'] = usuario_existe.id
             return redirect( '/perfil' )
 
-
 @app.route( '/logout', methods = ['POST'] )
 def procesa_logout():
     session.clear()
     return redirect( '/inicio' )
-
 
 @app.route('/perfil', methods = ['GET']) #validado por session
 def desplegar_perfil():
@@ -68,3 +63,36 @@ def desplegar_perfil():
         lista_mis_bandas = Banda.obtener_bandas_canciones(data)
         usuario_info = Usuario.tarjeta_usuario(data)
         return render_template('perfil.html', lista_mis_bandas = lista_mis_bandas, usuario = usuario_info)
+
+@app.route('/formulario/editar/perfil', methods=['GET'])
+def editar_perfil_form():
+    if 'id_usuario' not in session:
+        flash('Debes iniciar sesión para ver esta página.', 'error_acceso')
+        return redirect('/')
+    else:
+        data = {
+            "id_usuario": session['id_usuario']
+        }
+        estilos_rock = Usuario.obtener_todos_los_estilos()
+        usuario_info = Usuario.tarjeta_usuario(data)
+        return render_template('editar_perfil.html', usuario=usuario_info, estilos=estilos_rock)
+
+@app.route('/actualizar/perfil', methods=['POST'])
+def actualizar_perfil():
+    if 'id_usuario' not in session:
+        flash('Debes iniciar sesión para ver esta página.', 'error_acceso')
+        return redirect('/')
+    else:
+        estilo_rock_id = Usuario.obtener_estilo_id_por_descripcion(request.form['estilo_rock'])
+        if not estilo_rock_id:
+            flash('Estilo de rock no válido.', 'error')
+            return redirect('/formulario/editar/perfil')
+        
+        data = {
+            **request.form,
+            "id": session['id_usuario'],
+            "estilo_rock": estilo_rock_id
+        }
+        Usuario.editar_tarjeta_usuario(data)
+        flash('Perfil actualizado con éxito.', 'success')
+        return redirect('/perfil')
